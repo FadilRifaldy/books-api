@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.status(200).send("<h1>BLOG API</h1>");
+  res.status(200).send("<h1>BOOK API</h1>");
 });
 
 app.post("/book/create", async (req, res) => {
@@ -32,6 +32,19 @@ app.post("/book/create", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log("API RUNNING", PORT);
+
+app.post("/reviews", async (req: Request, res: Response) => {
+  try {
+    const review = await prisma.review.create({
+      data: req.body,
+    });
+    res.status(200).send({
+      message: "Review has been Added",
+      result: review,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
+
+app.listen(PORT, () => console.info("server is listening on port", PORT));
