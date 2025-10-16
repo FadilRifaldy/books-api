@@ -2,20 +2,36 @@ import dotenv from "dotenv";
 dotenv.config();
 import cors from "cors";
 import express from "express";
+
+import type { Application, Request, Response } from "express";
 import prisma from "./prisma.ts";
-import type{ Application, Request, Response, NextFunction } from "express"
 
 const PORT = process.env.PORT;
-//define app server
-const app: Application = express();
-//define app basic middleware
-app.use(cors()); //allow other domain to access
-app.use(express.json()); //for receive req body
 
-//define app main router
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).send("<h1>ORM API</h1>");
+const app: Application = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.status(200).send("<h1>BOOK API</h1>");
 });
+
+app.post("/book/create", async (req, res) => {
+  try {
+    const book = await prisma.book.create({
+      data: req.body,
+    });
+
+    res.status(201).send({
+      message: "Book Has Been Added!",
+      book: book,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 
 app.post("/reviews", async (req: Request, res: Response) => {
   try {
