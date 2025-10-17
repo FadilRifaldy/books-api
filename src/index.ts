@@ -47,4 +47,19 @@ app.post("/reviews", async (req: Request, res: Response) => {
   }
 });
 
+//get book with review
+app.get("/book/:id", async (req: Request, res: Response) => {
+  try {
+    const getbook = await prisma.book.findUnique({
+      where: { id: parseInt(req.params.id) },
+      include: {
+        reviews: true,
+      },
+    });
+    res.status(200).send(getbook);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 app.listen(PORT, () => console.info("server is listening on port", PORT));
