@@ -32,6 +32,7 @@ app.post("/book/create", async (req, res) => {
   }
 });
 
+// localhost:PORT/book?title=destiny&author=bungie
 app.get("/book", async (req, res) => {
   try {
     const books = await prisma.book.findMany();
