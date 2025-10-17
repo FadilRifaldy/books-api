@@ -46,7 +46,7 @@ app.get("/book", async (req, res) => {
 
     if (author) {
       filteredBooks = filteredBooks.filter((i) =>
-        i.title.toLowerCase().includes((author as string).toLowerCase())
+        i.author.toLowerCase().includes((author as string).toLowerCase())
       );
     }
 
