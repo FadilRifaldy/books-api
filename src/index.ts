@@ -32,6 +32,29 @@ app.post("/book/create", async (req, res) => {
   }
 });
 
+app.get("/book", async (req, res) => {
+  try {
+    const books = await prisma.book.findMany();
+    const { title, author } = req.query;
+    let filteredBooks = books;
+
+    if (title) {
+      filteredBooks = filteredBooks.filter((i) =>
+        i.title.toLowerCase().includes((title as string).toLowerCase())
+      );
+    }
+
+    if (author) {
+      filteredBooks = filteredBooks.filter((i) =>
+        i.title.toLowerCase().includes((author as string).toLowerCase())
+      );
+    }
+
+    res.status(200).send(filteredBooks);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 app.post("/reviews", async (req: Request, res: Response) => {
   try {
